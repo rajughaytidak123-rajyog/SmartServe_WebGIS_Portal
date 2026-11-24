@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: smartserve-gis
+  labels:
+    app.kubernetes.io/name: smartserve-gis
+    app.kubernetes.io/part-of: smartserve-webgis-portal

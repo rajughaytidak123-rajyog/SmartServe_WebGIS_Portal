@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discover Map – SmartServe GIS Multi-Service WebGIS Portal</title>
+  <meta name="description" content="Discover Map for Pune (PMC) and Pimpri-Chinchwad (PCMC). 4,747 POIs, multi-category exploration, radius proximity search, KNN, and boundary overlays.">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet 1.9.4 CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Leaflet MarkerCluster CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
+  <!-- Portal Global CSS & Leaflet Styles -->
+  <link rel="stylesheet" href="css/portal.css">
+  <link rel="stylesheet" href="frontend/css/style.css">
+  <link rel="stylesheet" href="frontend/css/leaflet-custom.css">
+
+  <style>
+    /* Adjust Leaflet app-container to account for portal navbar */
+    .app-header {
+      display: none !important; /* Hide original small header in favor of portal navbar */
+    }
+    .app-container {
+      top: var(--nav-height) !important;
+      height: calc(100vh - var(--nav-height)) !important;
+    }
+    .portal-search-bar {
+      position: absolute;
+      top: calc(var(--nav-height) + 16px);
+      left: calc(var(--sidebar-width) + 24px);
+      width: 380px;
+      z-index: 1000;
+    }
+    @media (max-width: 868px) {
+      .portal-search-bar {
+        left: 16px;
+        width: calc(100% - 32px);
+      }
+    }
+  </style>
+</head>
+<body class="map-page-body">
+
+  <!-- 1. TOP GLOBAL NAVIGATION -->
+  <nav class="portal-navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo">
+        <i class="fa-solid fa-layer-group"></i>
+      </div>
+      <div class="nav-title-group">
+        <div class="nav-title">
+          SmartServe GIS <span class="nav-badge">Leaflet Engine</span>
+        </div>
+        <div class="nav-subtitle">Multi-Service Proximity &amp; POI Discovery</div>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">
+        <i class="fa-solid fa-house"></i> Home
+      </a>
+      <a href="discover.html" class="nav-link active">
+        <i class="fa-solid fa-map-location-dot"></i> Discover Map
+      </a>
+      <a href="accessibility.html" class="nav-link">
+        <i class="fa-solid fa-cube"></i> 3D Vector &amp; Accessibility
+      </a>
+      <a href="insights.html" class="nav-link">
+        <i class="fa-solid fa-chart-pie"></i> Insights
+      </a>
+      <a href="about.html" class="nav-link">
+        <i class="fa-solid fa-book-open"></i> About &amp; Docs
+      </a>
+    </div>
+
+    <div class="nav-actions">
+      <div id="backend-status-badge" class="status-badge" title="Connecting to Backend...">
+        <span class="status-dot offline"></span>
+        <span class="status-text">Connecting...</span>
+      </div>
+      <button id="btn-open-analytics" class="btn-header-action btn-analytics" style="padding: 7px 12px; font-size: 12px; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: #60a5fa; border-radius: 6px; cursor: pointer;">
+        <i class="fa-solid fa-chart-pie"></i> Analytics
+      </button>
+      <a href="accessibility.html" class="btn-launch-map" style="background: linear-gradient(135deg, #6366f1, #4f46e5);" title="Switch to MapLibre 3D Vector Engine">
+        <i class="fa-solid fa-cube"></i> 3D Vector
+      </a>
+    </div>
+  </nav>
+
+  <!-- 2. MAIN APPLICATION WORKSPACE -->
+  <main class="app-container">
+
+    <!-- LEFT SIDEBAR -->
+    <aside id="sidebar" class="app-sidebar">
+      <!-- Mode Switcher Tabs -->
+      <nav class="sidebar-tabs">
+        <button class="tab-btn active" data-tab="explore">
+          <i class="fa-solid fa-compass"></i>
+          <span>Explore</span>
+        </button>
+        <button class="tab-btn" data-tab="radius">
+          <i class="fa-solid fa-circle-notch"></i>
+          <span>Radius</span>
+        </button>
+        <button class="tab-btn" data-tab="knn">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Nearest (KNN)</span>
+        </button>
+      </nav>
+
+      <!-- Scrollable Tab Content Area -->
+      <div class="sidebar-content">
+
+        <!-- TAB 1: EXPLORE (MULTI-CATEGORY SELECTOR) -->
+        <div id="tab-explore" class="tab-pane active">
+          <!-- Quick Search in Sidebar -->
+          <div style="padding: 10px 14px 4px;">
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="search-input" placeholder="Search POIs in Pune..." autocomplete="off">
+              <button id="search-clear-btn" class="search-clear-btn" style="display: none;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="search-autocomplete-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
+          </div>
+
+          <div class="section-header-row" style="margin-top: 6px;">
+            <span class="section-title">SERVICE DOMAINS</span>
+            <div class="category-quick-actions">
+              <button id="btn-select-all" class="btn-link">Select All</button>
+              <span class="separator">|</span>
+              <button id="btn-deselect-all" class="btn-link">Clear</button>
+            </div>
+          </div>
+
+          <!-- Dynamic Accordion of Categories Loaded from API -->
+          <div id="categories-tree-container" class="categories-accordion">
+            <div class="loading-placeholder">
+              <i class="fa-solid fa-spinner fa-spin"></i> Loading 20 service categories...
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: PROXIMITY RADIUS FILTER -->
+        <div id="tab-radius" class="tab-pane">
+          <div class="pane-description">
+            <i class="fa-solid fa-circle-info"></i> Click anywhere on the map or drag the location pin to search nearby services using PostGIS <code>ST_DWithin</code>.
+          </div>
+
+          <div class="radius-control-card">
+            <div class="radius-label-row">
+              <span class="control-label">Search Radius</span>
+              <span id="radius-value-display" class="radius-value-badge">2.0 km</span>
+            </div>
+            <div class="slider-wrapper">
+              <input type="range" id="radius-slider" min="500" max="10000" step="250" value="2000" class="custom-range-slider">
+            </div>
+            <div class="slider-ticks">
+              <span>500m</span>
+              <span>2.5km</span>
+              <span>5km</span>
+              <span>10km</span>
+            </div>
+          </div>
+
+          <!-- Active Location Pin Info -->
+          <div class="card current-location-card">
+            <div class="card-title"><i class="fa-solid fa-location-dot"></i> Reference Location</div>
+            <div class="location-coords" id="reference-coords-display">Lat: 18.5204 &bull; Lon: 73.8567</div>
+            <button id="btn-center-pune" class="btn-action-small">
+              <i class="fa-solid fa-crosshairs"></i> Reset to Pune Center
+            </button>
+          </div>
+
+          <!-- Live Results Summary List -->
+          <div class="results-header">
+            <span>Nearby Results</span>
+            <span id="radius-results-count" class="badge-count">0</span>
+          </div>
+          <div id="radius-results-list" class="results-list">
+            <div class="empty-state">Drag the pin on the map to query.</div>
+          </div>
+        </div>
+
+        <!-- TAB 3: K-NEAREST NEIGHBORS (KNN) -->
+        <div id="tab-knn" class="tab-pane">
+          <div class="pane-description">
+            <i class="fa-solid fa-bolt"></i> Instant index-accelerated K-Nearest Neighbors search using PostGIS distance operator <code>&lt;-&gt;</code>.
+          </div>
+
+          <div class="knn-controls-card">
+            <label class="control-label" for="knn-category-select">Select Service Type</label>
+            <select id="knn-category-select" class="custom-select">
+              <option value="" disabled selected>-- Choose Category --</option>
+              <option value="Healthcare">Healthcare Facilities</option>
+              <option value="Food">Food &amp; Dining</option>
+              <option value="Transport">Transport (Metro, Bus, Fuel)</option>
+              <option value="Finance">Finance &amp; ATMs</option>
+              <option value="Emergency">Emergency (Police, Fire)</option>
+              <option value="Education">Education (Schools, Colleges)</option>
+              <option value="Shopping">Shopping Malls &amp; Supermarkets</option>
+            </select>
+
+            <div class="knn-k-selector">
+              <span class="control-label">Number of nearest places (K):</span>
+              <div class="k-buttons-group">
+                <button class="k-btn active" data-k="3">3</button>
+                <button class="k-btn" data-k="5">5</button>
+                <button class="k-btn" data-k="10">10</button>
+              </div>
+            </div>
+
+            <button id="btn-execute-knn" class="btn-execute-primary">
+              <i class="fa-solid fa-magnifying-glass-location"></i> Find Nearest
+            </button>
+          </div>
+
+          <div class="results-header">
+            <span>Nearest Facilities</span>
+            <span id="knn-results-count" class="badge-count">0</span>
+          </div>
+          <div id="knn-results-list" class="results-list">
+            <div class="empty-state">Choose a service and click Find Nearest.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SIDEBAR FOOTER (MUNICIPALITY SWITCHER & STATS) -->
+      <footer class="sidebar-footer">
+        <div class="municipality-toggle-group">
+          <label class="checkbox-container">
+            <input type="checkbox" id="toggle-pmc-boundary" checked>
+            <span class="checkmark chk-pmc"></span>
+            <span class="lbl-text">PMC (Pune)</span>
+          </label>
+          <label class="checkbox-container">
+            <input type="checkbox" id="toggle-pcmc-boundary" checked>
+            <span class="checkmark chk-pcmc"></span>
+            <span class="lbl-text">PCMC (Pimpri-Chinchwad)</span>
+          </label>
+        </div>
+        <div class="sidebar-stats-row">
+          <span id="active-features-stat">4,747 POIs Available</span>
+          <span class="status-indicator-dot online"></span>
+        </div>
+      </footer>
+    </aside>
+
+    <!-- MAP CONTAINER -->
+    <section class="map-wrapper">
+      <div id="map" class="map-view"></div>
+    </section>
+
+  </main>
+
+  <!-- SPATIAL ANALYTICS MODAL -->
+  <div id="analytics-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fa-solid fa-chart-pie"></i> Pune &amp; PCMC Spatial Analytics</div>
+        <button id="btn-close-analytics" class="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="analytics-metrics-grid">
+          <div class="metric-card">
+            <div class="metric-val" id="metric-total-services">4,747</div>
+            <div class="metric-lbl">Total Indexed POIs</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="metric-pmc-pct">74.6%</div>
+            <div class="metric-lbl">PMC POI Share</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="metric-pcmc-pct">25.4%</div>
+            <div class="metric-lbl">PCMC POI Share</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val">11.12</div>
+            <div class="metric-lbl">Overall POIs / km²</div>
+          </div>
+        </div>
+        <div class="charts-row">
+          <div class="chart-box">
+            <div class="chart-title">Services by Category</div>
+            <canvas id="category-distribution-chart"></canvas>
+          </div>
+          <div class="chart-box">
+            <div class="chart-title">Municipality Distribution</div>
+            <canvas id="municipality-share-chart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT LIBRARIES -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- APPS SCRIPTS -->
+  <script src="frontend/js/config.js"></script>
+  <script src="frontend/js/api.js"></script>
+  <script src="frontend/js/map.js"></script>
+  <script src="frontend/js/charts.js"></script>
+  <script src="frontend/js/app.js"></script>
+
+</body>
+</html>

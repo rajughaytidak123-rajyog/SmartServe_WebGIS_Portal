@@ -1,0 +1,25 @@
+# =============================================================================
+# SmartServe GIS - WebGIS Unified Client Container (Leaflet + MapLibre)
+# =============================================================================
+FROM nginx:alpine
+
+# Remove default nginx welcome page
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy custom Nginx configuration
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy Leaflet frontend
+COPY frontend/ /usr/share/nginx/html/leaflet/
+
+# Copy MapLibre frontend
+COPY client/maplibre/ /usr/share/nginx/html/maplibre/
+
+# Copy static spatial datasets and PMTiles archives
+COPY data/ /usr/share/nginx/html/data/
+
+# Expose HTTP port 80
+EXPOSE 80
+
+# Run nginx in foreground
+CMD ["nginx", "-g", "daemon off;"]

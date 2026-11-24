@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartServe GIS – Pune & PCMC Location-Based Multi-Service WebGIS Portal</title>
+  <meta name="description" content="Enterprise WebGIS Portal for Pune Municipal Corporation (PMC) and PCMC. 4,747 POIs, 9 service domains, 15-minute walking network isochrones, and H3 hexagonal spatial analytics.">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom Portal Stylesheet -->
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body>
+
+  <!-- 1. TOP GLOBAL NAVIGATION -->
+  <nav class="portal-navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo">
+        <i class="fa-solid fa-layer-group"></i>
+      </div>
+      <div class="nav-title-group">
+        <div class="nav-title">
+          SmartServe GIS <span class="nav-badge">v2.0 Portal</span>
+        </div>
+        <div class="nav-subtitle">Pune &amp; PCMC Multi-Service Spatial Platform</div>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html" class="nav-link active">
+        <i class="fa-solid fa-house"></i> Home
+      </a>
+      <a href="discover.html" class="nav-link">
+        <i class="fa-solid fa-map-location-dot"></i> Discover Map
+      </a>
+      <a href="accessibility.html" class="nav-link">
+        <i class="fa-solid fa-cube"></i> 3D Vector &amp; Accessibility
+      </a>
+      <a href="insights.html" class="nav-link">
+        <i class="fa-solid fa-chart-pie"></i> Insights
+      </a>
+      <a href="about.html" class="nav-link">
+        <i class="fa-solid fa-book-open"></i> About &amp; Docs
+      </a>
+    </div>
+
+    <div class="nav-actions">
+      <a href="discover.html" class="btn-launch-map">
+        <i class="fa-solid fa-play"></i> Launch Map
+      </a>
+    </div>
+  </nav>
+
+  <!-- 2. MAIN BODY CONTENT -->
+  <main class="portal-main">
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="hero-pill">
+        <span class="hero-pill-dot"></span>
+        <span>Experiential Learning Spatial Infrastructure Platform &bull; Pune, MH</span>
+      </div>
+
+      <h1 class="hero-title">
+        Multi-Service WebGIS &amp; <span>Pedestrian Accessibility</span> for Pune.
+      </h1>
+
+      <p class="hero-subtitle">
+        Explore 4,747 verified urban points of interest across 9 service domains, interactive 15-minute walking-network accessibility isochrones, Uber H3 discrete global grids, and GPU-accelerated cloud-native vector tile services.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="discover.html" class="btn-hero-primary">
+          <i class="fa-solid fa-map-location-dot"></i> Open Discover Map
+        </a>
+        <a href="accessibility.html" class="btn-hero-secondary">
+          <i class="fa-solid fa-cube"></i> 3D Accessibility Engine
+        </a>
+        <a href="insights.html" class="btn-hero-secondary">
+          <i class="fa-solid fa-chart-pie"></i> Spatial Insights
+        </a>
+      </div>
+    </section>
+
+    <!-- METRICS STRIP -->
+    <section class="stats-strip">
+      <div class="stat-box">
+        <div class="stat-num">4,747</div>
+        <div class="stat-title">Verified Services</div>
+        <div class="stat-desc">9 Domains &bull; 20 Subcategories</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">251.0 km²</div>
+        <div class="stat-title">PMC Study Area</div>
+        <div class="stat-desc">Metric Projected UTM Zone 43N</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">7,163 km</div>
+        <div class="stat-title">Walkable Network</div>
+        <div class="stat-desc">39k Nodes &bull; 99k Street Edges</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">93.1%</div>
+        <div class="stat-title">Healthcare Access</div>
+        <div class="stat-desc">3.71M Residents within 15 Min</div>
+      </div>
+    </section>
+
+    <!-- 3 PRIMARY PORTAL CARDS -->
+    <section class="section-container">
+      <div class="section-header">
+        <div class="section-tag">Explore Interactive Capabilities</div>
+        <h2 class="section-title">Two Map Engines, One Unified Platform</h2>
+        <p class="section-subtitle">Choose the interactive visualization engine that best matches your exploration needs.</p>
+      </div>
+
+      <div class="grid-3">
+        <!-- Card 1: Discover Map -->
+        <a href="discover.html" class="feature-card">
+          <div class="feature-icon-wrapper" style="background: rgba(37, 99, 235, 0.15); color: #3b82f6;">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </div>
+          <h3 class="feature-card-title">Discover Map (Leaflet WebGIS)</h3>
+          <p class="feature-card-desc">
+            Full-featured spatial query portal with Google-style autocomplete search, interactive proximity filter slider (500m to 10km), K-Nearest Neighbors (KNN 5 Nearest), and municipal boundary overlays.
+          </p>
+          <div class="feature-card-link">
+            <span>Launch Discover Map</span> <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <!-- Card 2: 3D Vector & Accessibility -->
+        <a href="accessibility.html" class="feature-card">
+          <div class="feature-icon-wrapper" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">
+            <i class="fa-solid fa-person-walking"></i>
+          </div>
+          <h3 class="feature-card-title">3D Vector &amp; Accessibility Engine</h3>
+          <p class="feature-card-desc">
+            GPU-accelerated MapLibre GL JS engine. Explore 5, 10, and 15-minute walking isochrones across normal (4.8 km/h) and slower (3.6 km/h) speeds, H3 hexagonal access cells, and real-time metrics HUD.
+          </p>
+          <div class="feature-card-link">
+            <span>Explore Accessibility Engine</span> <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <!-- Card 3: Spatial Insights -->
+        <a href="insights.html" class="feature-card">
+          <div class="feature-icon-wrapper" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">
+            <i class="fa-solid fa-chart-column"></i>
+          </div>
+          <h3 class="feature-card-title">Spatial Analytics &amp; Insights</h3>
+          <p class="feature-card-desc">
+            Comprehensive interactive dashboard with demographic coverage breakdowns, buffer overestimation comparisons, H3 access gap heatmaps, and vector tile latency benchmarks.
+          </p>
+          <div class="feature-card-link">
+            <span>View Spatial Insights</span> <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- SERVICE DOMAINS SHOWCASE -->
+    <section class="section-container" style="padding-top: 10px;">
+      <div class="section-header">
+        <div class="section-tag">Urban Infrastructure Catalog</div>
+        <h2 class="section-title">9 Functional Service Domains</h2>
+        <p class="section-subtitle">Covering essential public facilities across Pune Municipal Corporation and Pimpri-Chinchwad.</p>
+      </div>
+
+      <div class="categories-showcase-grid">
+        <div class="category-showcase-card">
+          <div class="cat-icon-circle" style="background: #ef4444;">
+            <i class="fa-solid fa-hospital"></i>
+          </div>
+          <div>
+            <div class="cat-info-name">Healthcare</div>
+            <div class="cat-info-count">1,081 Facilities &bull; 409 Hospitals</div>
+          </div>
+        </div>
+
+        <div class="category-showcase-card">
+          <div class="cat-icon-circle" style="background: #f97316;">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+          <div>
+            <div class="cat-info-name">Food &amp; Dining</div>
+            <div class="cat-info-count">1,217 POIs &bull; 718 Restaurants</div>
+          </div>
+        </div>
+
+        <div class="category-showcase-card">
+          <div class="cat-icon-circle" style="background: #0ea5e9;">
+            <i class="fa-solid fa-bus"></i>
+          </div>
+          <div>
+            <div class="cat-info-name">Transport</div>
+            <div class="cat-info-count">334 Stations &bull; Metro, Fuel, EV</div>
+          </div>
+        </div>
+
+        <div class="category-showcase-card">
+          <div class="cat-icon-circle" style="background: #10b981;">
+            <i class="fa-solid fa-building-columns"></i>
+          </div>
+          <div>
+            <div class="cat-info-name">Finance</div>
+            <div class="cat-info-count">758 Facilities &bull; 358 Banks, 222 ATMs</div>
+          </div>
+        </div>
+
+        <div class="category-showcase-card">
+          <div class="cat-icon-circle" style="background: #8b5cf6;">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div>
+            <div class="cat-info-name">Education</div>
+            <div class="cat-info-count">444 Institutes &bull; 214 Schools, 135 Colleges</div>
+          </div>
+        </div>
+
+        <div class="category-showcase-card">
+          <div class="cat-icon-circle" style="background: #dc2626;">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <div class="cat-info-name">Emergency</div>
+            <div class="cat-info-count">74 Stations &bull; Police &amp; Fire</div>
+          </div>
+        </div>
+
+        <div class="category-showcase-card">
+          <div class="cat-icon-circle" style="background: #ec4899;">
+            <i class="fa-solid fa-bag-shopping"></i>
+          </div>
+          <div>
+            <div class="cat-info-name">Shopping</div>
+            <div class="cat-info-count">195 Venues &bull; 36 Malls, 104 Supermarkets</div>
+          </div>
+        </div>
+
+        <div class="category-showcase-card">
+          <div class="cat-icon-circle" style="background: #6366f1;">
+            <i class="fa-solid fa-hotel"></i>
+          </div>
+          <div>
+            <div class="cat-info-name">Accommodation</div>
+            <div class="cat-info-count">128 Venues &bull; 100 Hotels</div>
+          </div>
+        </div>
+
+        <div class="category-showcase-card">
+          <div class="cat-icon-circle" style="background: #22c55e;">
+            <i class="fa-solid fa-tree"></i>
+          </div>
+          <div>
+            <div class="cat-info-name">Recreation</div>
+            <div class="cat-info-count">507 Venues &bull; 329 Public Parks</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 3. FOOTER -->
+  <footer class="portal-footer">
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="discover.html">Discover Map</a>
+        <a href="accessibility.html">3D Vector &amp; Accessibility</a>
+        <a href="insights.html">Spatial Insights</a>
+        <a href="about.html">Architecture &amp; Documentation</a>
+      </div>
+      <div>
+        SmartServe GIS &bull; Experiential Learning Spatial Infrastructure Platform &bull; Pune Municipal Corporation (PMC)
+      </div>
+      <div style="font-size: 11px; color: var(--text-muted);">
+        Built with PostGIS, FastAPI, GeoServer, OSMnx, Uber H3, Leaflet, MapLibre GL JS, and PMTiles.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

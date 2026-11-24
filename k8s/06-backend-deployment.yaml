@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smartserve-backend
+  namespace: smartserve-gis
+  labels:
+    app: smartserve-backend
+    app.kubernetes.io/name: smartserve-backend
+    app.kubernetes.io/part-of: smartserve-webgis-portal
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: smartserve-backend
+  template:
+    metadata:
+      labels:
+        app: smartserve-backend
+    spec:
+      containers:
+        - name: backend
+          image: smartserve-backend:2.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http-api
+          env:
+            - name: DB_HOST
+              value: "smartserve-postgis"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: smartserve-db-secret
+                  key: POSTGRES_DB
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: smartserve-db-secret
+                  key: POSTGRES_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: smartserve-db-secret
+                  key: POSTGRES_PASSWORD
+            - name: CORS_ORIGINS
+              value: "*"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 15

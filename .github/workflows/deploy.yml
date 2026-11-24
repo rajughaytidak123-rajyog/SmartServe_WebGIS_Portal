@@ -1,0 +1,62 @@
+name: Deploy SmartServe WebGIS Portal to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Stage WebGIS Application Bundle
+        run: |
+          mkdir -p _site
+          
+          # 1. Copy Multi-Page Portal Pages and Root Assets
+          cp index.html _site/
+          cp discover.html _site/
+          cp accessibility.html _site/
+          cp insights.html _site/
+          cp about.html _site/
+          cp README.md _site/
+          
+          # 2. Copy Directory Trees (CSS, Frontend, Client MapLibre, Docs, Data)
+          cp -r css _site/
+          cp -r frontend _site/
+          cp -r client _site/
+          cp -r data _site/
+          if [ -d "docs" ]; then
+            cp -r docs _site/
+          fi
+          
+          echo "[INFO] Staged full multi-page WebGIS application bundle:"
+          ls -la _site/
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

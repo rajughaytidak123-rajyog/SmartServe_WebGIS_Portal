@@ -1,0 +1,86 @@
+[
+  {
+    "zoom": 12,
+    "label": "Zoom 12 (City Level)",
+    "tile": "12/2888/1833",
+    "bbox": "73.828125,18.479609,73.916016,18.562947",
+    "wms": {
+      "latency_ms": 67.1,
+      "payload_bytes": 54503,
+      "payload_kb": 53.23
+    },
+    "wfs": {
+      "latency_ms": 148.5,
+      "payload_bytes": 962935,
+      "payload_kb": 940.37,
+      "features": 1583
+    },
+    "mvt": {
+      "latency_ms": 15.4,
+      "payload_bytes": 78611,
+      "payload_kb": 76.77
+    },
+    "pg_featureserv": {
+      "latency_ms": 27.8,
+      "payload_bytes": 132247,
+      "payload_kb": 129.15,
+      "features": 200
+    }
+  },
+  {
+    "zoom": 14,
+    "label": "Zoom 14 (District Level)",
+    "tile": "14/11553/7334",
+    "bbox": "73.850098,18.500447,73.872070,18.521283",
+    "wms": {
+      "latency_ms": 29.1,
+      "payload_bytes": 18875,
+      "payload_kb": 18.43
+    },
+    "wfs": {
+      "latency_ms": 30.6,
+      "payload_bytes": 118084,
+      "payload_kb": 115.32,
+      "features": 193
+    },
+    "mvt": {
+      "latency_ms": 13.0,
+      "payload_bytes": 10093,
+      "payload_kb": 9.86
+    },
+    "pg_featureserv": {
+      "latency_ms": 25.9,
+      "payload_bytes": 121331,
+      "payload_kb": 118.49,
+      "features": 193
+    }
+  },
+  {
+    "zoom": 16,
+    "label": "Zoom 16 (Street Level)",
+    "tile": "16/46213/29336",
+    "bbox": "73.855591,18.516075,73.861084,18.521283",
+    "wms": {
+      "latency_ms": 28.0,
+      "payload_bytes": 3653,
+      "payload_kb": 3.57
+    },
+    "wfs": {
+      "latency_ms": 19.9,
+      "payload_bytes": 9366,
+      "payload_kb": 9.15,
+      "features": 15
+    },
+    "mvt": {
+      "latency_ms": 12.8,
+      "payload_bytes": 958,
+      "payload_kb": 0.94
+    },
+    "pg_featureserv": {
+      "latency_ms": 9.0,
+      "payload_bytes": 9455,
+      "payload_kb": 9.23,
+      "features": 15
+    }
+  }
+]

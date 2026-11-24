@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgis-pvc
+  namespace: smartserve-gis
+  labels:
+    app.kubernetes.io/name: postgis-pvc
+    app.kubernetes.io/part-of: smartserve-webgis-portal
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

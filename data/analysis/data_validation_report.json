@@ -1,0 +1,293 @@
+{
+  "timestamp": "2026-11-23T20:26:33.724749",
+  "projected_crs": "EPSG:32643",
+  "boundaries_validation": {
+    "pmc": {
+      "path": "data\\boundary\\pmc.geojson",
+      "feature_count": 1,
+      "native_crs": "EPSG:4326",
+      "crs_valid": true,
+      "all_geometries_valid": true,
+      "geometry_types": [
+        "Polygon"
+      ],
+      "bounding_box_wsen": [
+        73.751561,
+        18.428829,
+        73.962956,
+        18.621616
+      ],
+      "projected_area_sqkm_utm43n": 251.02
+    },
+    "pcmc": {
+      "path": "data\\boundary\\pcmc.geojson",
+      "feature_count": 1,
+      "native_crs": "EPSG:4326",
+      "crs_valid": true,
+      "all_geometries_valid": true,
+      "geometry_types": [
+        "MultiPolygon"
+      ],
+      "bounding_box_wsen": [
+        73.710425,
+        18.563864,
+        73.933979,
+        18.721132
+      ],
+      "projected_area_sqkm_utm43n": 176.74
+    },
+    "combined": {
+      "path": "data\\boundary\\pmc_pcmc_combined.geojson",
+      "feature_count": 2,
+      "native_crs": "EPSG:4326",
+      "crs_valid": true,
+      "all_geometries_valid": true,
+      "geometry_types": [
+        "Polygon",
+        "MultiPolygon"
+      ],
+      "bounding_box_wsen": [
+        73.710425,
+        18.428829,
+        73.962956,
+        18.721132
+      ],
+      "projected_area_sqkm_utm43n": 427.76
+    },
+    "study_area": {
+      "path": "data\\boundary\\study_area.geojson",
+      "feature_count": 1,
+      "native_crs": "EPSG:4326",
+      "crs_valid": true,
+      "all_geometries_valid": true,
+      "geometry_types": [
+        "MultiPolygon"
+      ],
+      "bounding_box_wsen": [
+        73.710425,
+        18.428829,
+        73.962956,
+        18.721132
+      ],
+      "projected_area_sqkm_utm43n": 427.29
+    }
+  },
+  "services_master_validation": {
+    "file": "data\\final\\all_services.geojson",
+    "total_records": 4742,
+    "native_crs": "EPSG:4326",
+    "all_geometries_valid": true,
+    "all_geometry_type_point": true,
+    "missing_attributes": {
+      "id": 0,
+      "name": 0,
+      "category": 0,
+      "subcategory": 0,
+      "latitude": 0,
+      "longitude": 0,
+      "municipality": 0
+    },
+    "duplicate_osm_ids": 0,
+    "duplicate_coordinate_pairs": 2,
+    "municipality_breakdown": {
+      "PMC": 3536,
+      "PCMC": 1206
+    },
+    "utm_zone_43n_x_range": [
+      364413.27957445977,
+      389740.2154432807
+    ],
+    "utm_zone_43n_y_range": [
+      2039302.5714290778,
+      2068702.6375866788
+    ]
+  },
+  "subcategories_validation": [
+    {
+      "file": "atms.geojson",
+      "count": 271,
+      "category": "Finance",
+      "subcategory": "ATM",
+      "is_valid": true,
+      "pmc_count": 222,
+      "pcmc_count": 49
+    },
+    {
+      "file": "bakeries.geojson",
+      "count": 87,
+      "category": "Food",
+      "subcategory": "Bakery",
+      "is_valid": true,
+      "pmc_count": 66,
+      "pcmc_count": 21
+    },
+    {
+      "file": "banks.geojson",
+      "count": 413,
+      "category": "Finance",
+      "subcategory": "Bank",
+      "is_valid": true,
+      "pmc_count": 358,
+      "pcmc_count": 55
+    },
+    {
+      "file": "bus_stations.geojson",
+      "count": 79,
+      "category": "Transport",
+      "subcategory": "Bus Station",
+      "is_valid": true,
+      "pmc_count": 44,
+      "pcmc_count": 35
+    },
+    {
+      "file": "cafes.geojson",
+      "count": 298,
+      "category": "Food",
+      "subcategory": "Cafe",
+      "is_valid": true,
+      "pmc_count": 223,
+      "pcmc_count": 75
+    },
+    {
+      "file": "clinics.geojson",
+      "count": 414,
+      "category": "Healthcare",
+      "subcategory": "Clinic",
+      "is_valid": true,
+      "pmc_count": 336,
+      "pcmc_count": 78
+    },
+    {
+      "file": "colleges.geojson",
+      "count": 168,
+      "category": "Education",
+      "subcategory": "College",
+      "is_valid": true,
+      "pmc_count": 135,
+      "pcmc_count": 33
+    },
+    {
+      "file": "ev_charging.geojson",
+      "count": 28,
+      "category": "Transport",
+      "subcategory": "EV Charging",
+      "is_valid": true,
+      "pmc_count": 16,
+      "pcmc_count": 12
+    },
+    {
+      "file": "fire_stations.geojson",
+      "count": 15,
+      "category": "Emergency",
+      "subcategory": "Fire Station",
+      "is_valid": true,
+      "pmc_count": 10,
+      "pcmc_count": 5
+    },
+    {
+      "file": "hospitals.geojson",
+      "count": 588,
+      "category": "Healthcare",
+      "subcategory": "Hospital",
+      "is_valid": true,
+      "pmc_count": 409,
+      "pcmc_count": 179
+    },
+    {
+      "file": "hotels.geojson",
+      "count": 132,
+      "category": "Accommodation",
+      "subcategory": "Hotel",
+      "is_valid": true,
+      "pmc_count": 100,
+      "pcmc_count": 32
+    },
+    {
+      "file": "metro_stations.geojson",
+      "count": 104,
+      "category": "Transport",
+      "subcategory": "Metro Station",
+      "is_valid": true,
+      "pmc_count": 77,
+      "pcmc_count": 27
+    },
+    {
+      "file": "parks.geojson",
+      "count": 507,
+      "category": "Recreation",
+      "subcategory": "Park",
+      "is_valid": true,
+      "pmc_count": 329,
+      "pcmc_count": 178
+    },
+    {
+      "file": "petrol_pumps.geojson",
+      "count": 151,
+      "category": "Transport",
+      "subcategory": "Petrol Pump",
+      "is_valid": true,
+      "pmc_count": 91,
+      "pcmc_count": 60
+    },
+    {
+      "file": "pharmacies.geojson",
+      "count": 150,
+      "category": "Healthcare",
+      "subcategory": "Pharmacy",
+      "is_valid": true,
+      "pmc_count": 105,
+      "pcmc_count": 45
+    },
+    {
+      "file": "police_stations.geojson",
+      "count": 59,
+      "category": "Emergency",
+      "subcategory": "Police Station",
+      "is_valid": true,
+      "pmc_count": 48,
+      "pcmc_count": 11
+    },
+    {
+      "file": "restaurants.geojson",
+      "count": 812,
+      "category": "Food",
+      "subcategory": "Restaurant",
+      "is_valid": true,
+      "pmc_count": 613,
+      "pcmc_count": 199
+    },
+    {
+      "file": "schools.geojson",
+      "count": 276,
+      "category": "Education",
+      "subcategory": "School",
+      "is_valid": true,
+      "pmc_count": 214,
+      "pcmc_count": 62
+    },
+    {
+      "file": "shopping_malls.geojson",
+      "count": 54,
+      "category": "Shopping",
+      "subcategory": "Shopping Mall",
+      "is_valid": true,
+      "pmc_count": 36,
+      "pcmc_count": 18
+    },
+    {
+      "file": "supermarkets.geojson",
+      "count": 136,
+      "category": "Shopping",
+      "subcategory": "Supermarket",
+      "is_valid": true,
+      "pmc_count": 104,
+      "pcmc_count": 32
+    }
+  ],
+  "overall_summary": {
+    "total_subcategory_records": 4742,
+    "total_master_records": 4742,
+    "master_equals_subcategories": true,
+    "validation_passed": true
+  }
+}

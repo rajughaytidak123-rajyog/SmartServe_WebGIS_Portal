@@ -1,0 +1,148 @@
+# =============================================================================
+# SmartServe GIS - Docker Compose Multi-Container Orchestration
+# Location-Based Multi-Service WebGIS & Spatial Infrastructure Platform
+# =============================================================================
+version: '3.8'
+
+services:
+  # ---------------------------------------------------------------------------
+  # 1. PostGIS Database Engine (PostgreSQL 16 + PostGIS 3.4)
+  # ---------------------------------------------------------------------------
+  postgis:
+    image: kartoza/postgis:16-3.4
+    container_name: smartserve-postgis
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-smartserve_db}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASS: ${DB_PASSWORD:-postgres}
+      ALLOW_IP_RANGE: "0.0.0.0/0"
+      FORCE_SSL: "FALSE"
+    volumes:
+      - postgis-data:/var/lib/postgresql
+      - ./docker/init-db:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "${DOCKER_POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d smartserve_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - smartserve-net
+
+  # ---------------------------------------------------------------------------
+  # 2. FastAPI REST Geospatial Backend
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: smartserve-backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: postgis
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-smartserve_db}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      CORS_ORIGINS: "*"
+    ports:
+      - "${DOCKER_BACKEND_PORT:-8000}:8000"
+    depends_on:
+      postgis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - smartserve-net
+
+  # ---------------------------------------------------------------------------
+  # 3. Crunchy Data pg_tileserv (High-Performance MVT Vector Tile Server)
+  # ---------------------------------------------------------------------------
+  pg_tileserv:
+    image: pramsey/pg_tileserv:latest
+    container_name: smartserve-tileserv
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@postgis:5432/${DB_NAME:-smartserve_db}
+    ports:
+      - "${DOCKER_TILESERV_PORT:-7800}:7800"
+    depends_on:
+      postgis:
+        condition: service_healthy
+    networks:
+      - smartserve-net
+
+  # ---------------------------------------------------------------------------
+  # 4. Crunchy Data pg_featureserv (OGC API Features REST Service)
+  # ---------------------------------------------------------------------------
+  pg_featureserv:
+    image: pramsey/pg_featureserv:latest
+    container_name: smartserve-featureserv
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@postgis:5432/${DB_NAME:-smartserve_db}
+    ports:
+      - "${DOCKER_FEATURESERV_PORT:-9000}:9000"
+    depends_on:
+      postgis:
+        condition: service_healthy
+    networks:
+      - smartserve-net
+
+  # ---------------------------------------------------------------------------
+  # 5. GeoServer OGC Map & Feature Service (WMS / WFS)
+  # ---------------------------------------------------------------------------
+  geoserver:
+    image: kartoza/geoserver:2.24.0
+    container_name: smartserve-geoserver
+    restart: unless-stopped
+    environment:
+      GEOSERVER_ADMIN_USER: ${GEOSERVER_USER:-admin}
+      GEOSERVER_ADMIN_PASSWORD: ${GEOSERVER_PASSWORD:-geoserver}
+    volumes:
+      - geoserver-data:/opt/geoserver/data_dir
+      - ./geoserver:/geoserver_config:ro
+    ports:
+      - "${DOCKER_GEOSERVER_PORT:-8080}:8080"
+    depends_on:
+      postgis:
+        condition: service_healthy
+    networks:
+      - smartserve-net
+
+  # ---------------------------------------------------------------------------
+  # 6. WebGIS Unified Client (Nginx: Leaflet on / + MapLibre on /maplibre)
+  # ---------------------------------------------------------------------------
+  client:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.client
+    container_name: smartserve-client
+    restart: unless-stopped
+    ports:
+      - "${DOCKER_CLIENT_PORT:-80}:80"
+    depends_on:
+      - backend
+      - pg_tileserv
+    networks:
+      - smartserve-net
+
+# -----------------------------------------------------------------------------
+# Persistent Volumes & Network Definitions
+# -----------------------------------------------------------------------------
+volumes:
+  postgis-data:
+    name: smartserve-postgis-data
+  geoserver-data:
+    name: smartserve-geoserver-data
+
+networks:
+  smartserve-net:
+    name: smartserve-network
+    driver: bridge

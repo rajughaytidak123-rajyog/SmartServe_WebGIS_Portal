@@ -1,0 +1,67 @@
+{
+  "timestamp": "2026-11-23T20:26:36.252900",
+  "total_pois_in_master": 4742,
+  "pmc_containment": {
+    "attribute_tagged_pmc": 3536,
+    "spatially_within_pmc": 3536,
+    "strictly_contained": true,
+    "mismatch_count": 0
+  },
+  "pcmc_containment": {
+    "attribute_tagged_pcmc": 1206,
+    "spatially_within_pcmc": 1217,
+    "strictly_contained": true,
+    "mismatch_count": 0
+  },
+  "pmc_service_categories_breakdown": {
+    "Food": 902,
+    "Healthcare": 850,
+    "Finance": 580,
+    "Education": 349,
+    "Recreation": 329,
+    "Transport": 228,
+    "Shopping": 140,
+    "Accommodation": 100,
+    "Emergency": 58
+  },
+  "pmc_service_subcategories_breakdown": {
+    "Restaurant": 613,
+    "Hospital": 409,
+    "Bank": 358,
+    "Clinic": 336,
+    "Park": 329,
+    "Cafe": 223,
+    "ATM": 222,
+    "School": 214,
+    "College": 135,
+    "Pharmacy": 105,
+    "Supermarket": 104,
+    "Hotel": 100,
+    "Petrol Pump": 91,
+    "Metro Station": 77,
+    "Bakery": 66,
+    "Police Station": 48,
+    "Bus Station": 44,
+    "Shopping Mall": 36,
+    "EV Charging": 16,
+    "Fire Station": 10
+  },
+  "accessibility_study_targets": {
+    "target_municipality": "PMC",
+    "study_area_sqkm_utm43n": 251.02,
+    "hospitals": 409,
+    "clinics": 336,
+    "total_primary_healthcare_destinations": 745,
+    "retained_categories_in_portal": [
+      "Healthcare",
+      "Food",
+      "Transport",
+      "Accommodation",
+      "Finance",
+      "Emergency",
+      "Education",
+      "Shopping",
+      "Recreation"
+    ]
+  }
+}

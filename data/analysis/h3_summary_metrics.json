@@ -1,0 +1,26 @@
+{
+  "h3_res8": {
+    "resolution": 8,
+    "total_cells": 363,
+    "cells_with_facility": 178,
+    "pct_cells_with_facility": 49.04,
+    "cells_accessible_15min_normal": 321,
+    "pct_cells_accessible_15min_normal": 88.43,
+    "cells_accessible_15min_slower": 307,
+    "pct_cells_accessible_15min_slower": 84.57,
+    "spatial_gap_cells_res8": 42,
+    "avg_dist_to_hospital_m": 713.7,
+    "avg_dist_to_clinic_m": 923.5
+  },
+  "h3_res9": {
+    "resolution": 9,
+    "total_cells": 2558,
+    "cells_with_facility": 415,
+    "pct_cells_with_facility": 16.22,
+    "cells_accessible_15min_normal": 2017,
+    "pct_cells_accessible_15min_normal": 78.85,
+    "cells_accessible_15min_slower": 1828,
+    "pct_cells_accessible_15min_slower": 71.46,
+    "spatial_gap_cells_res9": 541
+  }
+}

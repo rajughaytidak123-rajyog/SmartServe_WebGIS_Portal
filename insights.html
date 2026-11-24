@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spatial Insights &amp; Analytics – SmartServe GIS</title>
+  <meta name="description" content="Urban spatial analytics, pedestrian accessibility benchmarks, demographic vulnerability gap, and vector tile performance metrics for Pune Municipal Corporation.">
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Chart.js 4.4 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Global Portal Stylesheet -->
+  <link rel="stylesheet" href="css/portal.css">
+
+  <style>
+    .insights-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+      width: 100%;
+    }
+    .scenario-picker-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .scenario-picker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .charts-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .chart-card-header {
+      margin-bottom: 18px;
+    }
+    .chart-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chart-card-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .table-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow-x: auto;
+      margin-top: 32px;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: left;
+    }
+    table.data-table th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-secondary);
+      font-weight: 700;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+    table.data-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+    }
+    table.data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    @media (max-width: 868px) {
+      .charts-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. TOP GLOBAL NAVIGATION -->
+  <nav class="portal-navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-logo">
+        <i class="fa-solid fa-layer-group"></i>
+      </div>
+      <div class="nav-title-group">
+        <div class="nav-title">
+          SmartServe GIS <span class="nav-badge">Analytics</span>
+        </div>
+        <div class="nav-subtitle">Pune &amp; PCMC Spatial Insights</div>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">
+        <i class="fa-solid fa-house"></i> Home
+      </a>
+      <a href="discover.html" class="nav-link">
+        <i class="fa-solid fa-map-location-dot"></i> Discover Map
+      </a>
+      <a href="accessibility.html" class="nav-link">
+        <i class="fa-solid fa-cube"></i> 3D Vector &amp; Accessibility
+      </a>
+      <a href="insights.html" class="nav-link active">
+        <i class="fa-solid fa-chart-pie"></i> Insights
+      </a>
+      <a href="about.html" class="nav-link">
+        <i class="fa-solid fa-book-open"></i> About &amp; Docs
+      </a>
+    </div>
+
+    <div class="nav-actions">
+      <a href="accessibility.html" class="btn-launch-map">
+        <i class="fa-solid fa-person-walking"></i> View Map Engine
+      </a>
+    </div>
+  </nav>
+
+  <!-- 2. MAIN INSIGHTS BODY -->
+  <main class="portal-main">
+    <div class="insights-container">
+
+      <!-- HEADER -->
+      <div style="margin-bottom: 32px; text-align: center;">
+        <div class="section-tag">Urban Analytics &amp; Infrastructure Evaluation</div>
+        <h1 class="section-title" style="font-size: 38px;">Pune Spatial Accessibility Insights</h1>
+        <p class="section-subtitle" style="max-width: 750px;">
+          Empirical walking-network modeling, demographic accessibility coverage, street tortuosity penalties, and cloud-native tile performance benchmarks.
+        </p>
+      </div>
+
+      <!-- INTERACTIVE SCENARIO SELECTOR -->
+      <div class="scenario-picker-card">
+        <div class="scenario-picker-header">
+          <div>
+            <h3 style="font-size: 16px; font-weight: 700;">Active Accessibility Scenario</h3>
+            <p style="font-size: 12px; color: var(--text-muted);">Select walking pace and destination target to view live metrics.</p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <select id="scenario-select" class="btn-header" style="font-size: 13px; font-weight: 600; padding: 8px 14px; outline: none; background: rgba(37, 99, 235, 0.2); border-color: rgba(37, 99, 235, 0.5); color: #fff;">
+              <option value="all_normal" selected>All Healthcare &bull; Normal Pace (4.8 km/h)</option>
+              <option value="all_slower">All Healthcare &bull; Slower Pace (3.6 km/h)</option>
+              <option value="hosp_normal">Hospitals Only &bull; Normal Pace (4.8 km/h)</option>
+              <option value="hosp_slower">Hospitals Only &bull; Slower Pace (3.6 km/h)</option>
+              <option value="clinic_normal">Clinics Only &bull; Normal Pace (4.8 km/h)</option>
+              <option value="clinic_slower">Clinics Only &bull; Slower Pace (3.6 km/h)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="stats-strip" style="width: 100%; margin: 0; box-shadow: none; background: rgba(0,0,0,0.2);">
+          <div class="stat-box">
+            <div class="stat-num" id="stat-cov">56.7%</div>
+            <div class="stat-title">PMC Land Coverage</div>
+            <div class="stat-desc">Within 15 Min Walk</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="stat-area">142.4 km²</div>
+            <div class="stat-title">Reachable Area</div>
+            <div class="stat-desc">Out of 251.02 km² PMC</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="stat-pop">3.71M</div>
+            <div class="stat-title">Reachable Population</div>
+            <div class="stat-desc">93.1% of Total Residents</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="stat-gap" style="color: #ef4444;">42 Cells</div>
+            <div class="stat-title">H3 Access Deserts</div>
+            <div class="stat-desc">&gt; 15-Minute Walking Gap</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW 1 -->
+      <div class="charts-grid-2">
+        <!-- Chart 1: 15-Min Catchment Area by Scenario -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div class="chart-card-title"><i class="fa-solid fa-chart-simple" style="color: #3b82f6;"></i> 15-Minute Reachable Area (km²) by Scenario</div>
+            <div class="chart-card-desc">Comparing normal adult pace (4.8 km/h) vs. slower pace (3.6 km/h) across destinations.</div>
+          </div>
+          <div style="height: 280px;">
+            <canvas id="chart-isochrones"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 2: Demographic Reachability & Vulnerability Gap -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div class="chart-card-title"><i class="fa-solid fa-chart-pie" style="color: #ec4899;"></i> Population Access &amp; Vulnerability Gap</div>
+            <div class="chart-card-desc">Highlighting the 110,656 residents vulnerable to slower mobility.</div>
+          </div>
+          <div style="height: 280px;">
+            <canvas id="chart-demographics"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW 2 -->
+      <div class="charts-grid-2">
+        <!-- Chart 3: Buffer Overestimation vs Network Isochrones -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div class="chart-card-title"><i class="fa-solid fa-road" style="color: #f59e0b;"></i> Buffer Overestimation vs. Network Reality</div>
+            <div class="chart-card-desc">Euclidean circular buffers overestimate reachable area by 36% to 41% due to street tortuosity.</div>
+          </div>
+          <div style="height: 280px;">
+            <canvas id="chart-tortuosity"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart 4: Vector Tile Performance (MVT vs WFS) -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div class="chart-card-title"><i class="fa-solid fa-bolt" style="color: #10b981;"></i> Vector Tile Latency Benchmark (MVT vs. WFS)</div>
+            <div class="chart-card-desc">Crunchy Data pg_tileserv MVT is 5x to 7x faster than GeoServer WFS with 90% payload savings.</div>
+          </div>
+          <div style="height: 280px;">
+            <canvas id="chart-benchmark"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- FULL SERVICE CATALOG CHART -->
+      <div class="chart-card" style="margin-bottom: 32px;">
+        <div class="chart-card-header">
+          <div class="chart-card-title"><i class="fa-solid fa-layer-group" style="color: #8b5cf6;"></i> POI Distribution Across All 9 Functional Domains</div>
+          <div class="chart-card-desc">Complete catalog of 4,747 verified urban facilities in Pune and Pimpri-Chinchwad.</div>
+        </div>
+        <div style="height: 320px;">
+          <canvas id="chart-categories"></canvas>
+        </div>
+      </div>
+
+      <!-- SUMMARY BENCHMARK DATA TABLE -->
+      <div class="table-container">
+        <div style="padding: 16px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="font-size: 15px; font-weight: 700;">Empirical PostGIS Scenario Summary Table</h3>
+            <p style="font-size: 11px; color: var(--text-muted);">Ingested from PostGIS table <code>accessibility_summary</code> (UTM Zone 43N).</p>
+          </div>
+          <span class="nav-badge">18 Scenario Benchmarks</span>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Target Destination</th>
+              <th>Speed Scenario</th>
+              <th>Cutoff</th>
+              <th>Reachable Area</th>
+              <th>PMC Coverage</th>
+              <th>Accessible Pop</th>
+              <th>Coverage %</th>
+              <th>Accessible H3</th>
+              <th>Gap Deserts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>All Healthcare</strong></td>
+              <td>Normal (4.8 km/h)</td>
+              <td>15 Min</td>
+              <td><strong>142.42 km²</strong></td>
+              <td><strong>56.74%</strong></td>
+              <td>3,714,728</td>
+              <td><strong>93.12%</strong></td>
+              <td>321</td>
+              <td><span style="color: #ef4444; font-weight: 700;">42 Cells</span></td>
+            </tr>
+            <tr>
+              <td><strong>All Healthcare</strong></td>
+              <td>Slower (3.6 km/h)</td>
+              <td>15 Min</td>
+              <td><strong>124.47 km²</strong></td>
+              <td><strong>49.59%</strong></td>
+              <td>3,604,072</td>
+              <td><strong>90.35%</strong></td>
+              <td>295</td>
+              <td><span style="color: #ef4444; font-weight: 700;">68 Cells</span></td>
+            </tr>
+            <tr>
+              <td>Hospitals Only</td>
+              <td>Normal (4.8 km/h)</td>
+              <td>15 Min</td>
+              <td>132.84 km²</td>
+              <td>52.92%</td>
+              <td>3,580,210</td>
+              <td>89.75%</td>
+              <td>305</td>
+              <td>58 Cells</td>
+            </tr>
+            <tr>
+              <td>Hospitals Only</td>
+              <td>Slower (3.6 km/h)</td>
+              <td>15 Min</td>
+              <td>110.15 km²</td>
+              <td>43.88%</td>
+              <td>3,410,850</td>
+              <td>85.51%</td>
+              <td>274</td>
+              <td>89 Cells</td>
+            </tr>
+            <tr>
+              <td>Clinics Only</td>
+              <td>Normal (4.8 km/h)</td>
+              <td>15 Min</td>
+              <td>136.21 km²</td>
+              <td>54.26%</td>
+              <td>3,620,140</td>
+              <td>90.75%</td>
+              <td>312</td>
+              <td>51 Cells</td>
+            </tr>
+            <tr>
+              <td>Clinics Only</td>
+              <td>Slower (3.6 km/h)</td>
+              <td>15 Min</td>
+              <td>116.89 km²</td>
+              <td>46.57%</td>
+              <td>3,490,400</td>
+              <td>87.50%</td>
+              <td>286</td>
+              <td>77 Cells</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 3. FOOTER -->
+  <footer class="portal-footer">
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="discover.html">Discover Map</a>
+        <a href="accessibility.html">3D Vector &amp; Accessibility</a>
+        <a href="insights.html">Spatial Insights</a>
+        <a href="about.html">Architecture &amp; Documentation</a>
+      </div>
+      <div>
+        SmartServe GIS &bull; Experiential Learning Spatial Infrastructure Platform &bull; Pune Municipal Corporation (PMC)
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT FOR DYNAMIC CHARTS & SCENARIO TOGGLING -->
+  <script>
+    const SCENARIOS = {
+      all_normal:    { cov: "56.7%", area: "142.4 km²", pop: "3.71M", popPct: "93.1%", gaps: "42 Cells" },
+      all_slower:    { cov: "49.6%", area: "124.5 km²", pop: "3.60M", popPct: "90.3%", gaps: "68 Cells" },
+      hosp_normal:   { cov: "52.9%", area: "132.8 km²", pop: "3.58M", popPct: "89.7%", gaps: "58 Cells" },
+      hosp_slower:   { cov: "43.9%", area: "110.2 km²", pop: "3.41M", popPct: "85.5%", gaps: "89 Cells" },
+      clinic_normal: { cov: "54.3%", area: "136.2 km²", pop: "3.62M", popPct: "90.8%", gaps: "51 Cells" },
+      clinic_slower: { cov: "46.6%", area: "116.9 km²", pop: "3.49M", popPct: "87.5%", gaps: "77 Cells" }
+    };
+
+    document.getElementById("scenario-select").addEventListener("change", (e) => {
+      const s = SCENARIOS[e.target.value] || SCENARIOS.all_normal;
+      document.getElementById("stat-cov").textContent = s.cov;
+      document.getElementById("stat-area").textContent = s.area;
+      document.getElementById("stat-pop").textContent = s.pop;
+      document.getElementById("stat-gap").textContent = s.gaps;
+    });
+
+    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.08)';
+
+    // Chart 1: Isochrones Reachable Area
+    new Chart(document.getElementById("chart-isochrones"), {
+      type: "bar",
+      data: {
+        labels: ["All Healthcare", "Hospitals", "Clinics"],
+        datasets: [
+          { label: "Normal Pace (4.8 km/h)", data: [142.4, 132.8, 136.2], backgroundColor: "#3b82f6" },
+          { label: "Slower Pace (3.6 km/h)", data: [124.5, 110.2, 116.9], backgroundColor: "#60a5fa" }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true, title: { display: true, text: "Area (km²)" } } }
+      }
+    });
+
+    // Chart 2: Demographics & Vulnerability Gap
+    new Chart(document.getElementById("chart-demographics"), {
+      type: "doughnut",
+      data: {
+        labels: ["Reachable @ 3.6 km/h (Slower)", "Vulnerability Gap (110k)", "Unserved (> 15 min)"],
+        datasets: [{
+          data: [3604072, 110656, 274272],
+          backgroundColor: ["#10b981", "#f59e0b", "#ef4444"]
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    // Chart 3: Buffer Overestimation vs Network Isochrones
+    new Chart(document.getElementById("chart-tortuosity"), {
+      type: "bar",
+      data: {
+        labels: ["Hospitals", "Clinics", "All Healthcare"],
+        datasets: [
+          { label: "Euclidean Circular Buffer (Unrealistic)", data: [224.2, 219.6, 229.4], backgroundColor: "#f43f5e" },
+          { label: "Actual Network Isochrone (Realistic)", data: [132.8, 136.2, 142.4], backgroundColor: "#10b981" }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true, title: { display: true, text: "Surface Area (km²)" } } }
+      }
+    });
+
+    // Chart 4: Vector Tile Latency Benchmark
+    new Chart(document.getElementById("chart-benchmark"), {
+      type: "bar",
+      data: {
+        labels: ["Zoom 12 (City)", "Zoom 14 (District)", "Zoom 16 (Street)"],
+        datasets: [
+          { label: "GeoServer WFS (GeoJSON)", data: [118, 94, 85], backgroundColor: "#f97316" },
+          { label: "pg_tileserv MVT (Binary PBF)", data: [25, 18, 12], backgroundColor: "#3b82f6" }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { y: { beginAtZero: true, title: { display: true, text: "Response Latency (ms)" } } }
+      }
+    });
+
+    // Chart 5: All Categories
+    new Chart(document.getElementById("chart-categories"), {
+      type: "bar",
+      data: {
+        labels: ["Food & Dining", "Healthcare", "Finance", "Education", "Recreation", "Transport", "Shopping", "Accommodation", "Emergency"],
+        datasets: [{
+          label: "Verified Services Count",
+          data: [1217, 1081, 758, 444, 507, 334, 195, 128, 74],
+          backgroundColor: ["#f97316", "#ef4444", "#10b981", "#8b5cf6", "#22c55e", "#0ea5e9", "#ec4899", "#6366f1", "#dc2626"]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: 'y',
+        scales: { x: { beginAtZero: true } }
+      }
+    });
+  </script>
+
+</body>
+</html>

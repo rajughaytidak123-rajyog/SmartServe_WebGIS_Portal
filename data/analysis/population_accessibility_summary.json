@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "source": "Census of India & PMC Master Plan Projections",
+    "year": 2021,
+    "crs": "EPSG:4326 (WGS 84)",
+    "spatial_unit": "Uber H3 Resolution 8 (~0.737 km\u00b2)",
+    "total_population": 3990000.0,
+    "total_area_sqkm": 251.02,
+    "average_density_per_sqkm": 15895.1,
+    "limitations": "Spatial disaggregation from ward census baselines; local micro-pocket informal settlement variations smoothed."
+  },
+  "scenarios": {
+    "normal_4.8kmh_15min": {
+      "accessible_population": 3714728,
+      "accessible_pct": 93.1,
+      "unserved_population": 275277,
+      "unserved_pct": 6.9
+    },
+    "slower_3.6kmh_15min": {
+      "accessible_population": 3604072,
+      "accessible_pct": 90.33,
+      "unserved_population": 385933,
+      "unserved_pct": 9.67
+    },
+    "vulnerability_gap": {
+      "population_affected": 110656,
+      "pct_drop": 2.77
+    }
+  }
+}

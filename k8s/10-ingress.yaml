@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: smartserve-ingress
+  namespace: smartserve-gis
+  labels:
+    app.kubernetes.io/name: smartserve-ingress
+    app.kubernetes.io/part-of: smartserve-webgis-portal
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: "64m"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: smartserve-backend
+                port:
+                  number: 8000
+          - path: /health
+            pathType: Exact
+            backend:
+              service:
+                name: smartserve-backend
+                port:
+                  number: 8000
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: smartserve-client
+                port:
+                  number: 80

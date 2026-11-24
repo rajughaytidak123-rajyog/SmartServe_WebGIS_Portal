@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: smartserve-postgis
+  namespace: smartserve-gis
+  labels:
+    app: smartserve-postgis
+    app.kubernetes.io/name: smartserve-postgis
+    app.kubernetes.io/part-of: smartserve-webgis-portal
+spec:
+  serviceName: smartserve-postgis-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smartserve-postgis
+  template:
+    metadata:
+      labels:
+        app: smartserve-postgis
+    spec:
+      containers:
+        - name: postgis
+          image: kartoza/postgis:16-3.4
+          ports:
+            - containerPort: 5432
+              name: postgresql
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: smartserve-db-secret
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: smartserve-db-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: smartserve-db-secret
+                  key: POSTGRES_PASSWORD
+            - name: ALLOW_IP_RANGE
+              value: "0.0.0.0/0"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          volumeMounts:
+            - name: postgis-storage
+              mountPath: /var/lib/postgresql
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - postgres
+                - -d
+                - smartserve_db
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - postgres
+                - -d
+                - smartserve_db
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 5
+      volumes:
+        - name: postgis-storage
+          persistentVolumeClaim:
+            claimName: postgis-pvc
