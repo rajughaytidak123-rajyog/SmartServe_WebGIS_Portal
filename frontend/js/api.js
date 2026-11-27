@@ -81,6 +81,16 @@ const API = {
         }
 
         if (endpoint.startsWith('/categories/tree')) {
+            // Compute per-category and per-subcategory counts from cached services
+            const catCounts = {};
+            (this._cachedServices?.features || []).forEach(f => {
+                const cat = f.properties.category;
+                const sub = f.properties.subcategory;
+                if (!catCounts[cat]) catCounts[cat] = { total: 0, subs: {} };
+                catCounts[cat].total++;
+                catCounts[cat].subs[sub] = (catCounts[cat].subs[sub] || 0) + 1;
+            });
+
             const tree = [];
             let catId = 1;
             for (const [catName, catMeta] of Object.entries(CONFIG.CATEGORIES)) {
@@ -92,13 +102,15 @@ const API = {
                         subcategory: subName,
                         slug: subName.toLowerCase().replace(/[^a-z0-9]/g, '_'),
                         icon: subMeta.icon,
-                        color: subMeta.color
+                        color: subMeta.color,
+                        count: catCounts[catName]?.subs[subName] || 0
                     });
                 }
                 tree.push({
                     category: catName,
                     color: catMeta.color,
                     icon: catMeta.icon,
+                    total_count: catCounts[catName]?.total || 0,
                     subcategories: subcats
                 });
             }
@@ -180,9 +192,22 @@ const API = {
                 features = features.slice(0, parseInt(params.limit));
             }
 
+            // Map GeoJSON features → flat POI objects that app.js / map.js expect
+            // app.js reads: results.items (array), results.total (number)
+            // map.js renderPOIs() reads: poi.latitude, poi.longitude, poi.subcategory, poi.name, poi.distance_meters
+            const items = features.map(f => ({
+                ...f.properties,
+                latitude:  f.geometry.coordinates[1],
+                longitude: f.geometry.coordinates[0],
+                distance_meters: f.properties.distance_meters
+            }));
+
             return {
+                items: items,
+                total: items.length,
+                // keep GeoJSON alongside for any code that accesses .features directly
                 type: "FeatureCollection",
-                total_features: features.length,
+                total_features: items.length,
                 features: features
             };
         }
