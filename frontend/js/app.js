@@ -48,7 +48,18 @@ class SmartServeApp {
         this.registerEventListeners();
         this.setupSearchAutocomplete();
 
-        // 4. Check Health & Load Core Data
+        // 4. Check URL query parameters for direct category navigation
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const catParam = urlParams.get('cat') || urlParams.get('category');
+            if (catParam) {
+                this.state.selectedCategory = catParam;
+            }
+        } catch (e) {
+            console.warn('URL params parsing skipped:', e);
+        }
+
+        // 5. Check Health & Load Core Data
         await this.loadInitialData();
 
         console.log('[SmartServe GIS] Initialization Complete.');
@@ -450,6 +461,7 @@ class SmartServeApp {
                 lon: this.state.currentLocation.lon,
                 radius_meters: this.state.radiusMeters,
                 q: this.state.searchQuery || null,
+                category: this.state.selectedCategory || null,
                 subcategory: radiusSubcat || null,
                 municipality: this.state.selectedMunicipality || null,
                 limit: 300
@@ -538,8 +550,12 @@ class SmartServeApp {
                 `;
             }).join('');
 
+            const isMatch = this.state.selectedCategory && 
+                this.state.selectedCategory.toLowerCase() === cat.category.toLowerCase();
+            const expandedClass = isMatch ? ' expanded' : '';
+
             html += `
-                <div class="cat-group" data-cat="${cat.category}">
+                <div class="cat-group${expandedClass}" data-cat="${cat.category}">
                     <div class="cat-group-header">
                         <div class="cat-title">
                             <span class="cat-icon-box" style="background: ${meta.color}22; color: ${meta.color};">

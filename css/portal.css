@@ -564,3 +564,148 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ================================================================
+   SERVICE PHOTO CARDS  —  VibePune-style image cards
+   ================================================================ */
+
+.service-photo-section {
+  padding-top: 20px;
+}
+
+.service-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 32px;
+}
+
+@media (max-width: 1024px) {
+  .service-photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .service-photo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Individual photo card */
+.service-photo-card {
+  position: relative;
+  display: block;
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+  aspect-ratio: 4 / 3;
+  background: #1e293b;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1),
+              box-shadow 0.35s ease;
+}
+
+.service-photo-card:hover {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.55);
+}
+
+/* Background image */
+.service-photo-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  filter: brightness(0.75) saturate(1.1);
+}
+
+.service-photo-card:hover img {
+  transform: scale(1.07);
+  filter: brightness(0.6) saturate(1.2);
+}
+
+/* Dark gradient overlay — stronger at bottom */
+.spc-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.05) 0%,
+    rgba(0,0,0,0.25) 45%,
+    rgba(0,0,0,0.80) 100%
+  );
+  transition: background 0.35s ease;
+}
+
+.service-photo-card:hover .spc-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.10) 0%,
+    rgba(0,0,0,0.35) 40%,
+    rgba(0,0,0,0.90) 100%
+  );
+}
+
+/* Text content block at bottom */
+.spc-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 2;
+}
+
+/* Category label pill */
+.spc-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 20px;
+  padding: 3px 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  color: #fff;
+  text-transform: uppercase;
+  width: fit-content;
+  margin-bottom: 4px;
+}
+
+/* Card title */
+.spc-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.25;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* Card description */
+.spc-desc {
+  font-size: 0.80rem;
+  color: rgba(255,255,255,0.80);
+  line-height: 1.5;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.35s ease;
+}
+
+.service-photo-card:hover .spc-desc {
+  max-height: 60px;
+  opacity: 1;
+}
