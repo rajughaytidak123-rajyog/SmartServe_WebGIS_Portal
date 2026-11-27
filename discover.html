@@ -52,6 +52,110 @@
       flex-shrink: 0;
     }
 
+    /* Global Header Search Box inside Portal Navbar */
+    .header-search-box {
+      flex: 0 1 420px;
+      min-width: 260px;
+      margin: 0 16px;
+      position: relative;
+    }
+
+    .header-search-box .search-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .header-search-box .search-input-wrapper i.search-icon {
+      position: absolute;
+      left: 14px;
+      color: #38bdf8;
+      font-size: 0.9rem;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .header-search-box .search-input-wrapper input {
+      width: 100%;
+      height: 38px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(56, 189, 248, 0.35);
+      border-radius: 9999px;
+      padding: 0 38px 0 38px;
+      color: #f8fafc;
+      font-size: 0.85rem;
+      font-family: inherit;
+      transition: all 0.25s ease;
+    }
+
+    .header-search-box .search-input-wrapper input:focus {
+      outline: none;
+      background: rgba(15, 23, 42, 0.98);
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25), 0 0 20px rgba(56, 189, 248, 0.2);
+    }
+
+    .header-search-box .search-input-wrapper input::placeholder {
+      color: #64748b;
+    }
+
+    .search-clear-btn {
+      position: absolute;
+      right: 10px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.12);
+      color: #94a3b8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .search-clear-btn:hover {
+      background: rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+
+    /* Autocomplete dropdown positioning */
+    .search-autocomplete-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 14px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+      max-height: 380px;
+      overflow-y: auto;
+      z-index: 10001;
+      padding: 6px 0;
+    }
+
+    @media (max-width: 1200px) {
+      .nav-links .nav-link span {
+        display: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links {
+        display: none;
+      }
+      .header-search-box {
+        flex: 1;
+        margin: 0 8px;
+      }
+    }
+
     /* Push the original app header out of view */
     .app-header {
       display: none !important;
@@ -113,6 +217,19 @@
         <div class="nav-subtitle">Multi-Service Proximity &amp; POI Discovery</div>
       </div>
     </a>
+
+    <!-- GLOBAL KEYWORD SEARCH WITH AUTOCOMPLETE -->
+    <div class="header-search-box" id="header-search-container">
+      <div class="search-input-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="search-input" placeholder="Search hospitals, schools, fuel, ATMs, malls..." autocomplete="off" spellcheck="false">
+        <button id="search-clear-btn" class="search-clear-btn" title="Clear search" type="button" style="display: none;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <!-- Google-Style Autocomplete Dropdown -->
+      <div id="search-autocomplete-dropdown" class="search-autocomplete-dropdown" style="display: none;"></div>
+    </div>
 
     <div class="nav-links">
       <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>

@@ -135,6 +135,35 @@ const API = {
             return list;
         }
 
+        if (endpoint.startsWith('/services/autocomplete')) {
+            const q = (params.q || '').toLowerCase().trim();
+            const limit = parseInt(params.limit || 8);
+            if (!q) return [];
+
+            const feats = this._cachedServices?.features || [];
+            const results = [];
+            for (const f of feats) {
+                const name = f.properties.name || '';
+                const sub = f.properties.subcategory || '';
+                const cat = f.properties.category || '';
+                if (name.toLowerCase().includes(q) || sub.toLowerCase().includes(q) || cat.toLowerCase().includes(q)) {
+                    results.push({
+                        ...f.properties,
+                        id: f.properties.id,
+                        name: f.properties.name,
+                        category: f.properties.category,
+                        subcategory: f.properties.subcategory,
+                        municipality: f.properties.municipality,
+                        address: f.properties.address,
+                        latitude: f.geometry.coordinates[1],
+                        longitude: f.geometry.coordinates[0]
+                    });
+                    if (results.length >= limit) break;
+                }
+            }
+            return results;
+        }
+
         if (endpoint.startsWith('/services')) {
             let features = [...(this._cachedServices.features || [])];
 
